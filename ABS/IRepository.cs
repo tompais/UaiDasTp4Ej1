@@ -1,11 +1,14 @@
+using System.Data;
+
 namespace ABS
 {
     public interface IRepository<T> where T : class
     {
-        Task<IEnumerable<T>> GetAllAsync();
-        Task<T?> GetByIdAsync(int id);
-        Task<int> AddAsync(T entity);
-        Task<bool> UpdateAsync(T entity);
-        Task<bool> DeleteAsync(int id);
+        IEnumerable<T> GetAll();
+        T? GetById(int id);
+        int Add(T entity);
+        bool Update(T entity);
+        bool Delete(int id);
+        T MapFromReader(IDataRecord reader);
     }
 }

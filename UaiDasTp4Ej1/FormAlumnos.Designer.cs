@@ -204,7 +204,7 @@ txtNombre.Size = new Size(150, 27);
      btnCancelar.TabIndex = 4;
  btnCancelar.Text = "Cancelar";
       btnCancelar.UseVisualStyleBackColor = true;
-       btnCancelar.Click += btnCancelar_Click;
+       btnCancelar.Click += BtnCancelar_Click;
      // 
             // btnEliminar
     // 
@@ -214,7 +214,7 @@ txtNombre.Size = new Size(150, 27);
  btnEliminar.TabIndex = 3;
      btnEliminar.Text = "Eliminar";
         btnEliminar.UseVisualStyleBackColor = true;
-   btnEliminar.Click += btnEliminar_Click;
+   btnEliminar.Click += BtnEliminar_Click;
        // 
     // btnModificar
        // 
@@ -224,7 +224,7 @@ txtNombre.Size = new Size(150, 27);
             btnModificar.TabIndex = 2;
      btnModificar.Text = "Modificar";
        btnModificar.UseVisualStyleBackColor = true;
-    btnModificar.Click += btnModificar_Click;
+    btnModificar.Click += BtnModificar_Click;
       // 
     // btnGuardar
        // 
@@ -234,7 +234,7 @@ txtNombre.Size = new Size(150, 27);
 btnGuardar.TabIndex = 1;
    btnGuardar.Text = "Guardar";
             btnGuardar.UseVisualStyleBackColor = true;
-       btnGuardar.Click += btnGuardar_Click;
+       btnGuardar.Click += BtnGuardar_Click;
        // 
  // btnNuevo
             // 
@@ -244,7 +244,7 @@ btnGuardar.TabIndex = 1;
    btnNuevo.TabIndex = 0;
       btnNuevo.Text = "Nuevo";
    btnNuevo.UseVisualStyleBackColor = true;
-            btnNuevo.Click += btnNuevo_Click;
+            btnNuevo.Click += BtnNuevo_Click;
   // 
     // FormAlumnos
             // 

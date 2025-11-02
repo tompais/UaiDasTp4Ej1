@@ -103,15 +103,15 @@ label1.Text = "Obra:";
     panel1.Size = new Size(1000, 60);
    // btnCancelar, btnEliminar, btnModificar, btnGuardar, btnNuevo
 btnCancelar = new Button { Location = new Point(420, 15), Size = new Size(90, 35), Text = "Cancelar" };
-          btnCancelar.Click += btnCancelar_Click;
+          btnCancelar.Click += BtnCancelar_Click;
      btnEliminar = new Button { Location = new Point(320, 15), Size = new Size(90, 35), Text = "Eliminar" };
-    btnEliminar.Click += btnEliminar_Click;
+    btnEliminar.Click += BtnEliminar_Click;
        btnModificar = new Button { Location = new Point(220, 15), Size = new Size(90, 35), Text = "Modificar" };
-btnModificar.Click += btnModificar_Click;
+btnModificar.Click += BtnModificar_Click;
 btnGuardar = new Button { Location = new Point(120, 15), Size = new Size(90, 35), Text = "Guardar" };
-     btnGuardar.Click += btnGuardar_Click;
+     btnGuardar.Click += BtnGuardar_Click;
     btnNuevo = new Button { Location = new Point(20, 15), Size = new Size(90, 35), Text = "Nuevo" };
-    btnNuevo.Click += btnNuevo_Click;
+    btnNuevo.Click += BtnNuevo_Click;
   // FormEjemplares
   ClientSize = new Size(1000, 550);
      Controls.Add(dgvEjemplares);

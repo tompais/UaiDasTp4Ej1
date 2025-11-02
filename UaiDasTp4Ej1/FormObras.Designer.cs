@@ -178,7 +178,7 @@ btnCancelar.UseVisualStyleBackColor = true;
   btnEliminar.TabIndex = 3;
        btnEliminar.Text = "Eliminar";
    btnEliminar.UseVisualStyleBackColor = true;
-    btnEliminar.Click += btnEliminar_Click;
+    btnEliminar.Click += BtnEliminar_Click;
     // btnModificar
        btnModificar.Location = new Point(220, 15);
 btnModificar.Name = "btnModificar";
@@ -186,7 +186,7 @@ btnModificar.Name = "btnModificar";
      btnModificar.TabIndex = 2;
      btnModificar.Text = "Modificar";
    btnModificar.UseVisualStyleBackColor = true;
-  btnModificar.Click += btnModificar_Click;
+  btnModificar.Click += BtnModificar_Click;
    // btnGuardar
        btnGuardar.Location = new Point(120, 15);
        btnGuardar.Name = "btnGuardar";
@@ -194,7 +194,7 @@ btnModificar.Name = "btnModificar";
      btnGuardar.TabIndex = 1;
        btnGuardar.Text = "Guardar";
        btnGuardar.UseVisualStyleBackColor = true;
-       btnGuardar.Click += btnGuardar_Click;
+       btnGuardar.Click += BtnGuardar_Click;
        // btnNuevo
 btnNuevo.Location = new Point(20, 15);
   btnNuevo.Name = "btnNuevo";
@@ -202,7 +202,7 @@ btnNuevo.Size = new Size(90, 35);
 btnNuevo.TabIndex = 0;
        btnNuevo.Text = "Nuevo";
        btnNuevo.UseVisualStyleBackColor = true;
-         btnNuevo.Click += btnNuevo_Click;
+         btnNuevo.Click += BtnNuevo_Click;
   // FormObras
  AutoScaleDimensions = new SizeF(8F, 20F);
        AutoScaleMode = AutoScaleMode.Font;

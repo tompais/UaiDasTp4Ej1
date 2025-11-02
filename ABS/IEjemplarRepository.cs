@@ -4,8 +4,8 @@ namespace ABS
 {
     public interface IEjemplarRepository : IRepository<Ejemplar>
     {
-   Task<IEnumerable<Ejemplar>> GetByObraIdAsync(int obraId);
-        Task<IEnumerable<Ejemplar>> GetDisponiblesAsync();
-        Task<Ejemplar?> GetByNumeroInventarioAsync(string numeroInventario);
+        IEnumerable<Ejemplar> GetByObraId(int obraId);
+        IEnumerable<Ejemplar> GetDisponibles();
+        Ejemplar? GetByNumeroInventario(string numeroInventario);
     }
 }

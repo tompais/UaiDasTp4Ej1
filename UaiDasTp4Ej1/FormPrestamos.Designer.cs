@@ -82,13 +82,13 @@ label1.Location = new Point(20, 33);
        panel1.Size = new Size(1000, 60);
     // btnDevolver, btnCancelar, btnGuardar, btnNuevo
        btnDevolver = new Button { Location = new Point(320, 15), Size = new Size(90, 35), Text = "Devolver" };
-btnDevolver.Click += btnDevolver_Click;
+btnDevolver.Click += BtnDevolver_Click;
     btnCancelar = new Button { Location = new Point(220, 15), Size = new Size(90, 35), Text = "Cancelar" };
-       btnCancelar.Click += btnCancelar_Click;
+       btnCancelar.Click += BtnCancelar_Click;
      btnGuardar = new Button { Location = new Point(120, 15), Size = new Size(90, 35), Text = "Guardar" };
-       btnGuardar.Click += btnGuardar_Click;
+       btnGuardar.Click += BtnGuardar_Click;
   btnNuevo = new Button { Location = new Point(20, 15), Size = new Size(90, 35), Text = "Nuevo" };
-     btnNuevo.Click += btnNuevo_Click;
+     btnNuevo.Click += BtnNuevo_Click;
        // FormPrestamos
   ClientSize = new Size(1000, 550);
      Controls.Add(dgvPrestamos);

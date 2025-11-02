@@ -361,3 +361,20 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# ===================================
+# VARIABLES DE ENTORNO Y CONFIGURACIÓN SENSIBLE
+# ===================================
+
+# Archivos de variables de entorno - NO SUBIR CONTRASEÑAS
+.env
+.env.*
+*.env
+
+# Archivos de configuración local con datos sensibles
+appsettings.Development.json
+appsettings.Local.json
+connectionstrings.config
+
+# Archivos de configuración de usuario de Visual Studio
+**/Properties/launchSettings.json

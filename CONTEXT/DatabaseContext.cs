@@ -1,34 +1,25 @@
-using System.Data;
 using Microsoft.Data.SqlClient;
+using System.Data;
 
 namespace CONTEXT
 {
-    public class DatabaseContext
+    public class DatabaseContext(string connectionString)
     {
-        private readonly string _connectionString;
+        public IDbConnection CreateConnection() =>
+            new SqlConnection(connectionString);
 
-        public DatabaseContext(string connectionString)
-     {
-            _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
-        }
-
-        public IDbConnection CreateConnection()
+        public bool TestConnection()
         {
-   return new SqlConnection(_connectionString);
-        }
-
-        public async Task<bool> TestConnectionAsync()
-        {
-   try
-          {
-     using var connection = CreateConnection();
-              await ((SqlConnection)connection).OpenAsync();
-         return true;
-     }
+            try
+            {
+                using var connection = CreateConnection();
+                connection.Open();
+                return true;
+            }
             catch
             {
-       return false;
-    }
-     }
+                return false;
+            }
+        }
     }
 }

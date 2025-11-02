@@ -3,104 +3,115 @@ using DOM;
 
 namespace SERV
 {
-    public class EjemplarService
+    public class EjemplarService(IEjemplarRepository ejemplarRepository, IObraRepository obraRepository)
     {
-        private readonly IEjemplarRepository _ejemplarRepository;
-        private readonly IObraRepository _obraRepository;
+        public IEnumerable<Ejemplar> GetAllEjemplares() =>
+            ejemplarRepository.GetAll();
 
-        public EjemplarService(IEjemplarRepository ejemplarRepository, IObraRepository obraRepository)
+        public Ejemplar? GetEjemplarById(int id)
         {
-    _ejemplarRepository = ejemplarRepository ?? throw new ArgumentNullException(nameof(ejemplarRepository));
-         _obraRepository = obraRepository ?? throw new ArgumentNullException(nameof(obraRepository));
+            if (id <= 0)
+            {
+                throw new ArgumentException("El ID debe ser mayor a cero", nameof(id));
+            }
+
+            return ejemplarRepository.GetById(id);
         }
 
-        public async Task<IEnumerable<Ejemplar>> GetAllEjemplaresAsync()
+        public IEnumerable<Ejemplar> GetEjemplaresByObraId(int obraId)
         {
-    return await _ejemplarRepository.GetAllAsync();
+            if (obraId <= 0)
+            {
+                throw new ArgumentException("El ID de obra debe ser mayor a cero", nameof(obraId));
+            }
+
+            return ejemplarRepository.GetByObraId(obraId);
         }
 
-        public async Task<Ejemplar?> GetEjemplarByIdAsync(int id)
+        public IEnumerable<Ejemplar> GetEjemplaresDisponibles() =>
+            ejemplarRepository.GetDisponibles();
+
+        public Ejemplar? GetEjemplarByNumeroInventario(string numeroInventario)
         {
-         if (id <= 0)
-       throw new ArgumentException("El ID debe ser mayor a cero", nameof(id));
+            if (string.IsNullOrWhiteSpace(numeroInventario))
+            {
+                throw new ArgumentException("El número de inventario no puede estar vacío", nameof(numeroInventario));
+            }
 
-    return await _ejemplarRepository.GetByIdAsync(id);
-   }
+            return ejemplarRepository.GetByNumeroInventario(numeroInventario);
+        }
 
-        public async Task<IEnumerable<Ejemplar>> GetEjemplaresByObraIdAsync(int obraId)
+        public int CreateEjemplar(Ejemplar ejemplar)
         {
-if (obraId <= 0)
-     throw new ArgumentException("El ID de obra debe ser mayor a cero", nameof(obraId));
+            ValidateEjemplar(ejemplar);
 
-      return await _ejemplarRepository.GetByObraIdAsync(obraId);
-}
+            // Verificar que no exista otro ejemplar con el mismo número de inventario
+            var existente = ejemplarRepository.GetByNumeroInventario(ejemplar.NumeroInventario);
+            if (existente != null)
+            {
+                throw new InvalidOperationException($"Ya existe un ejemplar con el número de inventario {ejemplar.NumeroInventario}");
+            }
 
-        public async Task<IEnumerable<Ejemplar>> GetEjemplaresDisponiblesAsync()
-   {
-       return await _ejemplarRepository.GetDisponiblesAsync();
-     }
+            return ejemplarRepository.Add(ejemplar);
+        }
 
-        public async Task<Ejemplar?> GetEjemplarByNumeroInventarioAsync(string numeroInventario)
+        public bool UpdateEjemplar(Ejemplar ejemplar)
         {
-if (string.IsNullOrWhiteSpace(numeroInventario))
-          throw new ArgumentException("El número de inventario no puede estar vacío", nameof(numeroInventario));
+            ValidateEjemplar(ejemplar);
 
-   return await _ejemplarRepository.GetByNumeroInventarioAsync(numeroInventario);
- }
+            if (ejemplar.Id <= 0)
+            {
+                throw new ArgumentException("El ID debe ser mayor a cero", nameof(ejemplar));
+            }
 
-        public async Task<int> CreateEjemplarAsync(Ejemplar ejemplar)
-   {
-   await ValidateEjemplarAsync(ejemplar);
+            // Verificar que no exista otro ejemplar con el mismo número de inventario
+            var existente = ejemplarRepository.GetByNumeroInventario(ejemplar.NumeroInventario);
+            if (existente != null && existente.Id != ejemplar.Id)
+            {
+                throw new InvalidOperationException($"Ya existe otro ejemplar con el número de inventario {ejemplar.NumeroInventario}");
+            }
 
-      // Verificar que no exista otro ejemplar con el mismo número de inventario
-       var existente = await _ejemplarRepository.GetByNumeroInventarioAsync(ejemplar.NumeroInventario);
-    if (existente != null)
-  throw new InvalidOperationException($"Ya existe un ejemplar con el número de inventario {ejemplar.NumeroInventario}");
+            return ejemplarRepository.Update(ejemplar);
+        }
 
-     return await _ejemplarRepository.AddAsync(ejemplar);
-  }
-
-public async Task<bool> UpdateEjemplarAsync(Ejemplar ejemplar)
+        public bool DeleteEjemplar(int id)
         {
-      await ValidateEjemplarAsync(ejemplar);
+            if (id <= 0)
+            {
+                throw new ArgumentException("El ID debe ser mayor a cero", nameof(id));
+            }
 
-  if (ejemplar.Id <= 0)
-       throw new ArgumentException("El ID debe ser mayor a cero", nameof(ejemplar.Id));
+            return ejemplarRepository.Delete(id);
+        }
 
-      // Verificar que no exista otro ejemplar con el mismo número de inventario
-       var existente = await _ejemplarRepository.GetByNumeroInventarioAsync(ejemplar.NumeroInventario);
-   if (existente != null && existente.Id != ejemplar.Id)
-throw new InvalidOperationException($"Ya existe otro ejemplar con el número de inventario {ejemplar.NumeroInventario}");
-
-      return await _ejemplarRepository.UpdateAsync(ejemplar);
-    }
-
-     public async Task<bool> DeleteEjemplarAsync(int id)
+        private void ValidateEjemplar(Ejemplar ejemplar)
         {
-      if (id <= 0)
-       throw new ArgumentException("El ID debe ser mayor a cero", nameof(id));
+            if (ejemplar == null)
+            {
+                throw new ArgumentNullException(nameof(ejemplar));
+            }
 
-  return await _ejemplarRepository.DeleteAsync(id);
-      }
+            if (ejemplar.ObraId <= 0)
+            {
+                throw new ArgumentException("El ID de obra debe ser mayor a cero", nameof(ejemplar));
+            }
 
-        private async Task ValidateEjemplarAsync(Ejemplar ejemplar)
-        {
-       if (ejemplar == null)
-       throw new ArgumentNullException(nameof(ejemplar));
+            // Verificar que la obra existe
+            var obra = obraRepository.GetById(ejemplar.ObraId);
+            if (obra == null)
+            {
+                throw new InvalidOperationException($"No existe una obra con ID {ejemplar.ObraId}");
+            }
 
-          if (ejemplar.ObraId <= 0)
-   throw new ArgumentException("El ID de obra debe ser mayor a cero", nameof(ejemplar.ObraId));
-
-       // Verificar que la obra existe
-            var obra = await _obraRepository.GetByIdAsync(ejemplar.ObraId);
-       if (obra == null)
-    throw new InvalidOperationException($"No existe una obra con ID {ejemplar.ObraId}");
-
-       if (string.IsNullOrWhiteSpace(ejemplar.NumeroInventario))
-           throw new ArgumentException("El número de inventario es requerido", nameof(ejemplar.NumeroInventario));
+            if (string.IsNullOrWhiteSpace(ejemplar.NumeroInventario))
+            {
+                throw new ArgumentException("El número de inventario es requerido", nameof(ejemplar));
+            }
 
             if (ejemplar.Precio <= 0)
-   throw new ArgumentException("El precio debe ser mayor a cero", nameof(ejemplar.Precio));
-   }
+            {
+                throw new ArgumentException("El precio debe ser mayor a cero", nameof(ejemplar));
+            }
+        }
     }
 }

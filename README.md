@@ -13,13 +13,14 @@
 
 1. [Descripción](#-descripción)
 2. [Inicio Rápido](#-inicio-rápido)
-3. [Arquitectura](#?-arquitectura-del-proyecto)
-4. [Modelo de Datos](#?-modelo-de-datos)
-5. [Instalación Completa](#-instalación-completa)
-6. [Funcionalidades](#-funcionalidades)
-7. [Tecnologías](#-tecnologías-utilizadas)
-8. [Principios y Patrones](#-principios-y-patrones-aplicados)
-9. [Checklist de Cumplimiento](#-checklist-de-cumplimiento)
+3. [Configuración de Variables de Entorno](#-configuración-de-variables-de-entorno)
+4. [Arquitectura](#?-arquitectura-del-proyecto)
+5. [Modelo de Datos](#?-modelo-de-datos)
+6. [Instalación Completa](#-instalación-completa)
+7. [Funcionalidades](#-funcionalidades)
+8. [Tecnologías](#-tecnologías-utilizadas)
+9. [Principios y Patrones](#-principios-y-patrones-aplicados)
+10. [Checklist de Cumplimiento](#-checklist-de-cumplimiento)
 
 ---
 
@@ -46,37 +47,52 @@ El sistema permite gestionar:
 
 #### **Paso 1: Crear la Base de Datos**
 
-Abrir **SQL Server Management Studio (SSMS)** y ejecutar:
+Abrir **SQL Server Management Studio (SSMS)** y ejecutar los scripts en orden desde la carpeta `UaiDasTp4Ej1\SQL\`:
 
 ```sql
 -- Ejecutar en orden:
-SQL\01_CreateDatabase.sql  -- Crea BD y tablas con datos de prueba
-SQL\02_SP_Alumnos.sql-- Stored Procedures de Alumnos
-SQL\03_SP_Obras.sql        -- Stored Procedures de Obras
-SQL\04_SP_Ejemplares.sql   -- Stored Procedures de Ejemplares
-SQL\05_SP_Prestamos.sql    -- Stored Procedures de Préstamos
+UaiDasTp4Ej1\SQL\01_CreateDatabase.sql  -- Crea BD y tablas con datos de prueba
+UaiDasTp4Ej1\SQL\02_SP_Alumnos.sql      -- Stored Procedures de Alumnos
+UaiDasTp4Ej1\SQL\03_SP_Obras.sql-- Stored Procedures de Obras
+UaiDasTp4Ej1\SQL\04_SP_Ejemplares.sql   -- Stored Procedures de Ejemplares
+UaiDasTp4Ej1\SQL\05_SP_Prestamos.sql    -- Stored Procedures de Préstamos
 ```
 
-#### **Paso 2: Configurar Cadena de Conexión**
+?? **Ver documentación completa:** [UaiDasTp4Ej1/SQL/README.md](UaiDasTp4Ej1/SQL/README.md)
 
-Editar `APP\Configuration.cs`:
+#### **Paso 2: Configurar Conexión a la Base de Datos**
 
-**Windows Authentication (Recomendado):**
-```csharp
-public static string ConnectionString { get; set; } = 
-    "Server=localhost;Database=BibliotecaDB;Trusted_Connection=True;TrustServerCertificate=True;";
+**Opción A: Variables de Entorno (Recomendado)** ??
+
+Para **SQL Server Authentication** (usuario y contraseña):
+
+```powershell
+# PowerShell
+$env:DB_SERVER = "192.168.1.100,1433"  # Tu IP y puerto
+$env:DB_DATABASE = "BibliotecaDB"
+$env:DB_USER = "sa"        # Tu usuario
+$env:DB_PASSWORD = "TuPassword123!"    # Tu contraseña
 ```
 
-**SQL Server Authentication:**
-```csharp
-public static string ConnectionString { get; set; } = 
-    "Server=localhost;Database=BibliotecaDB;User Id=sa;Password=TuPassword;TrustServerCertificate=True;";
+Para **Windows Authentication**:
+
+```powershell
+$env:DB_SERVER = "localhost"
+$env:DB_DATABASE = "BibliotecaDB"
+$env:DB_USE_INTEGRATED_SECURITY = "true"
 ```
 
-**LocalDB:**
+?? **Ver guía completa:** [ENVIRONMENT_SETUP.md](ENVIRONMENT_SETUP.md)
+
+**Opción B: Editar directamente en código**
+
+Editar `APP\Configuration.cs` (método `GetDefaultConnectionString`):
+
 ```csharp
-public static string ConnectionString { get; set; } = 
-    "Server=(localdb)\\mssqllocaldb;Database=BibliotecaDB;Trusted_Connection=True;TrustServerCertificate=True;";
+private static string GetDefaultConnectionString()
+{
+    return "Server=TU_IP,PUERTO;Database=BibliotecaDB;User Id=TU_USUARIO;Password=TU_PASSWORD;TrustServerCertificate=True;";
+}
 ```
 
 #### **Paso 3: Restaurar y Compilar**
@@ -105,6 +121,48 @@ dotnet run --project UaiDasTp4Ej1/UaiDasTp4Ej1.csproj
 
 ---
 
+## ?? Configuración de Variables de Entorno
+
+El sistema soporta configuración mediante **variables de entorno** para mayor seguridad y flexibilidad.
+
+### Variables Disponibles
+
+| Variable | Descripción | Ejemplo |
+|----------|-------------|---------|
+| `DB_SERVER` | Servidor SQL Server con puerto (opcional) | `192.168.1.100,1433` |
+| `DB_DATABASE` | Nombre de la base de datos | `BibliotecaDB` |
+| `DB_USER` | Usuario (SQL Server Auth) | `sa` |
+| `DB_PASSWORD` | Contraseña (SQL Server Auth) | `MiPassword123!` |
+| `DB_USE_INTEGRATED_SECURITY` | Usar Windows Auth | `true` |
+
+### Ejemplos Rápidos
+
+**SQL Server remoto con usuario/contraseña:**
+```powershell
+$env:DB_SERVER = "192.168.1.50,1433"
+$env:DB_DATABASE = "BibliotecaDB"
+$env:DB_USER = "biblioteca_user"
+$env:DB_PASSWORD = "Password2025!"
+```
+
+**SQL Server local con Windows Authentication:**
+```powershell
+$env:DB_SERVER = "localhost"
+$env:DB_DATABASE = "BibliotecaDB"
+$env:DB_USE_INTEGRATED_SECURITY = "true"
+```
+
+### Valor Por Defecto
+
+Si no se configuran variables de entorno, se usa:
+```
+Server=localhost;Database=BibliotecaDB;Trusted_Connection=True;TrustServerCertificate=True;
+```
+
+?? **Guía completa de configuración:** [ENVIRONMENT_SETUP.md](ENVIRONMENT_SETUP.md)
+
+---
+
 ## ??? Arquitectura del Proyecto
 
 ### Estructura de Capas
@@ -112,65 +170,65 @@ dotnet run --project UaiDasTp4Ej1/UaiDasTp4Ej1.csproj
 ```
 UaiDasTp4Ej1/
 ?
-??? ?? DOM/           # Dominio - Entidades del negocio
+??? ?? DOM/    # Dominio - Entidades del negocio
 ?   ??? Alumno.cs
 ?   ??? Obra.cs
 ?   ??? Ejemplar.cs
 ?   ??? Prestamo.cs
 ?
-??? ?? ABS/  # Abstracción - Interfaces
+??? ?? ABS/           # Abstracción - Interfaces
 ?   ??? IRepository.cs
 ?   ??? IAlumnoRepository.cs
 ?   ??? IObraRepository.cs
 ?   ??? IEjemplarRepository.cs
 ?   ??? IPrestamoRepository.cs
 ?
-??? ?? CONTEXT/   # Contexto - Conexión a BD
+??? ?? CONTEXT/       # Contexto - Conexión a BD
 ?   ??? DatabaseContext.cs
 ?
-??? ?? REPO/       # Repositorios - Acceso a datos (ADO.NET)
+??? ?? REPO/        # Repositorios - Acceso a datos (ADO.NET)
 ?   ??? AlumnoRepository.cs
 ?   ??? ObraRepository.cs
 ?   ??? EjemplarRepository.cs
 ?   ??? PrestamoRepository.cs
 ?
-??? ?? SERV/      # Servicios - Lógica de negocio
+??? ?? SERV/       # Servicios - Lógica de negocio
 ?   ??? AlumnoService.cs
 ?   ??? ObraService.cs
 ?   ??? EjemplarService.cs
 ?   ??? PrestamoService.cs
 ?
-??? ?? APP/        # Aplicación - Configuración e IoC
-?   ??? Configuration.cs
-? ??? DependencyInjection.cs
+??? ?? APP/      # Aplicación - Configuración e IoC
+?   ??? Configuration.cs # ?? Con soporte de variables de entorno
+?   ??? DependencyInjection.cs
 ?
 ??? ?? UaiDasTp4Ej1/  # Presentación - Windows Forms (MDI/SDI)
-?   ??? Form1.cs              # MDI Container
-?   ??? FormAlumnos.cs   # SDI - Gestión de Alumnos
-?   ??? FormObras.cs          # SDI - Gestión de Obras
-?   ??? FormEjemplares.cs     # SDI - Gestión de Ejemplares
+?   ??? FormPrincipal.cs # MDI Container (antes Form1)
+?   ??? FormAlumnos.cs        # SDI - Gestión de Alumnos
+?   ??? FormObras.cs    # SDI - Gestión de Obras
+?   ??? FormEjemplares.cs# SDI - Gestión de Ejemplares
 ?   ??? FormPrestamos.cs      # SDI - Gestión de Préstamos
 ?
 ??? ?? SQL/        # Scripts de Base de Datos
- ??? 01_CreateDatabase.sql
+    ??? 01_CreateDatabase.sql
     ??? 02_SP_Alumnos.sql
     ??? 03_SP_Obras.sql
     ??? 04_SP_Ejemplares.sql
     ??? 05_SP_Prestamos.sql
-    ??? 06_ResetDatabase.sql
+    ??? README.md
 ```
 
 ### Flujo de Dependencias
 
 ```
 Presentación (WinForms)
-         ?
+     ?
     Servicios (SERV)
-         ?
+       ?
   Repositorios (REPO)
-    ?
-    Contexto (CONTEXT)
          ?
+    Contexto (CONTEXT)
+ ?
    Base de Datos (SQL Server)
 ```
 
@@ -182,45 +240,45 @@ Presentación (WinForms)
 
 ```
 ???????????????????      ???????????????????
-?    ALUMNOS      ?   ?     OBRAS       ?
-???????????????????         ???????????????????
-? Id (PK)         ?  ? Id (PK)         ?
-? Nombre   ?         ? Titulo       ?
-? Apellido        ? ? Autor  ?
-? DNI (UNIQUE)?         ? Editorial       ?
-? Email  ? ? ISBN (UNIQUE)   ?
-? Telefono    ?      ? AnioPublicacion ?
-? FechaNacimiento ?         ? Genero          ?
-? Activo          ?   ? Activo     ?
-???????????????????         ???????????????????
-     ?         ?
-         ?      ?
+?    ALUMNOS      ?      ?     OBRAS       ?
+??????????????????? ???????????????????
+? Id (PK)         ?    ? Id (PK)         ?
+? Nombre          ? ? Titulo    ?
+? Apellido        ?    ? Autor           ?
+? DNI (UNIQUE) ?      ? Editorial    ?
+? Email           ?      ? ISBN (UNIQUE)   ?
+? Telefono        ?    ? AnioPublicacion ?
+? FechaNacimiento ?      ? Genero          ?
+? Activo          ?      ? Activo          ?
+???????????????????  ???????????????????
+  ? ?
+    ? ?
          ?        ?????????????????????????????????????
-         ??         EJEMPLARES   ?
-         ?  ?????????????????????????????????????
- ?        ? Id (PK)           ?
-   ?   ? ObraId (FK) ????????????????????? ?
-   ?  ? NumeroInventario (UNIQUE)      ?
-         ? ? Precio          ?
-         ?        ? Disponible    ?
-      ?        ? Activo           ?
+         ?        ?         EJEMPLARES       ?
        ?        ?????????????????????????????????????
+   ?        ? Id (PK)        ?
+  ?    ? ObraId (FK) ???????????????????????
+         ?  ? NumeroInventario (UNIQUE)    ?
+         ?        ? Precio            ?
+  ?        ? Disponible                ?
+         ?        ? Activo           ?
+  ?        ?????????????????????????????????????
          ?        ?
-   ?        ?
+   ?           ?
          ???????????????????
-        ?
+      ?
          ??????????????????????????
- ?      PRESTAMOS         ?
+     ?      PRESTAMOS    ?
          ??????????????????????????
-         ? Id (PK)   ?
+      ? Id (PK)         ?
          ? AlumnoId (FK) ??????????
-       ? EjemplarId (FK) ????????
-     ? FechaPrestamo        ?
+         ? EjemplarId (FK) ????????
+         ? FechaPrestamo          ?
          ? FechaDevolucionPrevista?
-         ? FechaDevolucionReal    ?
-         ? Devuelto          ?
-     ? Activo      ?
-   ??????????????????????????
+     ? FechaDevolucionReal    ?
+         ? Devuelto        ?
+         ? Activo              ?
+ ??????????????????????????
 ```
 
 ### Descripción de Tablas
@@ -274,24 +332,32 @@ cd UaiDasTp4Ej1
 
 #### Opción A: Script Completo (Recomendado)
 
-Ejecutar en SSMS en el siguiente orden:
+Ejecutar en SSMS en el siguiente orden desde la carpeta `UaiDasTp4Ej1\SQL\`:
 
 ```sql
 -- 1. Crear base de datos y tablas
-:r SQL\01_CreateDatabase.sql
+:r UaiDasTp4Ej1\SQL\01_CreateDatabase.sql
 
 -- 2. Crear Stored Procedures
-:r SQL\02_SP_Alumnos.sql
-:r SQL\03_SP_Obras.sql
-:r SQL\04_SP_Ejemplares.sql
-:r SQL\05_SP_Prestamos.sql
+:r UaiDasTp4Ej1\SQL\02_SP_Alumnos.sql
+:r UaiDasTp4Ej1\SQL\03_SP_Obras.sql
+:r UaiDasTp4Ej1\SQL\04_SP_Ejemplares.sql
+:r UaiDasTp4Ej1\SQL\05_SP_Prestamos.sql
 ```
+
+?? **Ver guía detallada:** [UaiDasTp4Ej1/SQL/README.md](UaiDasTp4Ej1/SQL/README.md)
 
 #### Opción B: Script Individual
 
 Abrir cada archivo SQL en SSMS y ejecutar con `F5`.
 
 ### 3. Configurar Connection String
+
+**Opción A: Variables de Entorno (Recomendado)**
+
+Ver la [guía completa](ENVIRONMENT_SETUP.md) de configuración.
+
+**Opción B: Editar el código**
 
 Editar `APP\Configuration.cs` según tu configuración de SQL Server.
 
@@ -371,7 +437,7 @@ La base de datos incluye automáticamente:
 - ? Transacciones para integridad de datos
 
 ### Interfaz de Usuario
-- ? Formulario principal MDI con menú
+- ? Formulario principal MDI con menú (**FormPrincipal**)
 - ? Menú Gestión (Alumnos, Obras, Ejemplares, Préstamos)
 - ? Menú Ventanas (Cascada, Horizontal, Vertical)
 - ? Menú Ayuda (Acerca de)
@@ -396,6 +462,7 @@ La base de datos incluye automáticamente:
 | Stored Procedures | T-SQL | Operaciones de BD |
 | Microsoft.Data.SqlClient | 6.1.2 | Proveedor de datos para SQL Server |
 | Microsoft.Extensions.DependencyInjection | 9.0.10 | Contenedor de IoC |
+| **Variables de Entorno** | - | **Configuración segura de conexión** |
 
 ---
 
@@ -465,6 +532,7 @@ La base de datos incluye automáticamente:
 - **Service Layer Pattern**: Lógica de negocio centralizada
 - **Dependency Injection**: Desacoplamiento y testabilidad
 - **MDI/SDI Pattern**: Interfaz de múltiples documentos
+- **Environment Variables**: Configuración externa segura ??
 
 ---
 
@@ -523,7 +591,7 @@ La base de datos incluye automáticamente:
 #### ? 3. Interfaz de Usuario
 
 **MDI Container:**
-- [x] Form1 - Formulario principal MDI
+- [x] **FormPrincipal** - Formulario principal MDI (antes Form1)
 - [x] Menú Gestión con 4 opciones
 - [x] Menú Ventanas (Cascada, Horizontal, Vertical)
 - [x] Menú Ayuda (Acerca de)
@@ -550,7 +618,7 @@ La base de datos incluye automáticamente:
 - [x] **CONTEXT** - Contexto de BD
 - [x] **REPO** - 4 repositorios con ADO.NET
 - [x] **SERV** - 4 servicios de negocio
-- [x] **APP** - Configuración e IoC
+- [x] **APP** - Configuración e IoC con variables de entorno ??
 - [x] **UaiDasTp4Ej1** - 5 formularios WinForms
 - [x] **SQL** - 6 scripts SQL
 
@@ -562,6 +630,7 @@ La base de datos incluye automáticamente:
 - [x] **Clean Code** - Código limpio y legible
 - [x] **Clean Architecture** - Arquitectura limpia
 - [x] **Dependency Injection** - IoC Container
+- [x] **12-Factor App** - Configuración externa (variables de entorno)
 
 #### ? Características Técnicas
 
@@ -579,6 +648,7 @@ La base de datos incluye automáticamente:
 - [x] Validaciones en capa de negocio
 - [x] Validaciones en capa de presentación
 - [x] Separación de responsabilidades
+- [x] **Configuración mediante variables de entorno** ??
 
 **Reglas de Negocio:**
 - [x] DNI único por alumno
@@ -610,7 +680,21 @@ La base de datos incluye automáticamente:
 **Solución:**
 1. Verificar que SQL Server esté ejecutándose
 2. Verificar que la base de datos BibliotecaDB existe
-3. Revisar la cadena de conexión en `APP\Configuration.cs`
+3. Revisar la cadena de conexión o variables de entorno
+4. Ver [ENVIRONMENT_SETUP.md](ENVIRONMENT_SETUP.md) para más detalles
+
+### Error: "A network-related or instance-specific error"
+**Solución:**
+1. Verificar la IP y puerto del servidor
+2. Verificar que SQL Server acepte conexiones remotas
+3. Verificar el firewall (puerto 1433)
+4. Probar conexión con: `ping <IP_SERVIDOR>`
+
+### Error: "Login failed for user"
+**Solución:**
+1. Verificar usuario y contraseña en las variables de entorno
+2. Verificar que SQL Server Authentication esté habilitado
+3. Verificar permisos del usuario en la base de datos
 
 ### Error: "Could not find stored procedure"
 **Solución:**
@@ -628,7 +712,7 @@ dotnet build
 
 ### El formulario no abre
 **Solución:**
-1. Verificar que se configuró la cadena de conexión
+1. Verificar que se configuraron las variables de entorno o connection string
 2. Verificar que la base de datos existe
 3. Revisar el archivo de logs en Visual Studio (Output window)
 
@@ -714,6 +798,12 @@ dotnet run --project UaiDasTp4Ej1/UaiDasTp4Ej1.csproj --configuration Release
 dotnet --info
 ```
 
+### Verificar Variables de Entorno
+```powershell
+# PowerShell
+Get-ChildItem Env: | Where-Object { $_.Name -like "DB_*" }
+```
+
 ---
 
 ## ?? Entrega del TP
@@ -726,12 +816,13 @@ El proyecto cumple con **TODOS** los requerimientos del TP4 Ejercicio 1:
 
 ? Base de datos completa con 4 tablas relacionadas  
 ? 32 Stored procedures para todas las operaciones CRUD  
-? Interfaz MDI con formularios SDI  
+? Interfaz MDI/SDI completamente funcional  
 ? Arquitectura en 7 capas bien definidas  
 ? Principios SOLID, DRY, YAGNI, KISS aplicados  
 ? Clean Code y Clean Architecture implementados  
 ? ADO.NET en modo conectado  
 ? Inyección de dependencias  
+? **Configuración segura con variables de entorno** ??  
 ? Documentación completa
 
 ### ?? Qué Entregar
@@ -739,7 +830,8 @@ El proyecto cumple con **TODOS** los requerimientos del TP4 Ejercicio 1:
 1. **Código Fuente** (carpeta completa del proyecto)
 2. **Scripts SQL** (carpeta `SQL/`)
 3. **Este README.md**
-4. **Archivo de solución** (.sln)
+4. **Guía de configuración** (ENVIRONMENT_SETUP.md)
+5. **Archivo de solución** (.sln)
 
 ### ?? Puntos Destacados para la Presentación
 
@@ -748,9 +840,10 @@ El proyecto cumple con **TODOS** los requerimientos del TP4 Ejercicio 1:
 3. **ADO.NET Conectado** - Uso correcto de `SqlConnection`, `SqlCommand`, `SqlDataReader`
 4. **Principios SOLID** - Ejemplos concretos en el código
 5. **Inyección de Dependencias** - Uso de `IServiceProvider`
-6. **Interfaz MDI/SDI** - Formulario principal con formularios hijos
+6. **Interfaz MDI/SDI** - **FormPrincipal** con formularios hijos
 7. **Validaciones** - En capa de negocio y presentación
 8. **Manejo de Transacciones** - En préstamos y devoluciones
+9. **Variables de Entorno** - Configuración segura y flexible ??
 
 ---
 
@@ -760,6 +853,7 @@ El proyecto cumple con **TODOS** los requerimientos del TP4 Ejercicio 1:
 **Trabajo Práctico**: TP4 - Ejercicio 1  
 **Tecnología**: .NET 8, C# 12, Windows Forms, ADO.NET, SQL Server  
 **Arquitectura**: Capas con SOLID y Clean Architecture  
+**Configuración**: Variables de entorno para seguridad ??  
 **Año**: 2025  
 
 ---
@@ -770,4 +864,11 @@ Este proyecto es un trabajo académico desarrollado para la asignatura Desarrollo
 
 ---
 
-**¡Sistema listo para usar y presentar!** ??????
+## ?? Documentación Adicional
+
+- ?? [Guía de Configuración de Variables de Entorno](ENVIRONMENT_SETUP.md)
+- ??? Scripts SQL en la carpeta `SQL/`
+
+---
+
+**¡Sistema listo para usar y presentar!** ??????????
