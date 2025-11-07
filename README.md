@@ -1,4 +1,4 @@
-# Sistema de Gesti�n de Biblioteca ??
+# Sistema de Gesti�n de Biblioteca
 
 ## Trabajo Pr�ctico 4 - Ejercicio 1
 ### Desarrollo y Arquitectura de Software
@@ -9,7 +9,7 @@
 
 ---
 
-## ?? Tabla de Contenidos
+## Tabla de Contenidos
 
 1. [Descripci�n](#-descripci�n)
 2. [Inicio R�pido](#-inicio-r�pido)
@@ -24,19 +24,19 @@
 
 ---
 
-## ?? Descripci�n
+## Descripci�n
 
 Sistema de gesti�n de biblioteca desarrollado con **.NET 8**, **Windows Forms (MDI/SDI)**, **ADO.NET en modo conectado**, **SQL Server** y **Stored Procedures**, siguiendo una **arquitectura en capas** y aplicando principios **SOLID**, **Clean Code** y **Clean Architecture**.
 
 El sistema permite gestionar:
-- ?? **Alumnos** (datos personales)
-- ?? **Obras** (libros y publicaciones)
-- ?? **Ejemplares** (copias f�sicas de obras)
-- ?? **Pr�stamos** (registro y devoluciones)
+- **Alumnos** (datos personales)
+- **Obras** (libros y publicaciones)
+- **Ejemplares** (copias f�sicas de obras)
+- **Pr�stamos** (registro y devoluciones)
 
 ---
 
-## ?? Inicio R�pido
+## Inicio R�pido
 
 ### Prerrequisitos
 - .NET 8 SDK
@@ -51,27 +51,27 @@ Abrir **SQL Server Management Studio (SSMS)** y ejecutar los scripts en orden de
 
 ```sql
 -- Ejecutar en orden:
-UaiDasTp4Ej1\SQL\01_CreateDatabase.sql  -- Crea BD y tablas con datos de prueba
-UaiDasTp4Ej1\SQL\02_SP_Alumnos.sql      -- Stored Procedures de Alumnos
+UaiDasTp4Ej1\SQL\01_CreateDatabase.sql -- Crea BD y tablas con datos de prueba
+UaiDasTp4Ej1\SQL\02_SP_Alumnos.sql -- Stored Procedures de Alumnos
 UaiDasTp4Ej1\SQL\03_SP_Obras.sql-- Stored Procedures de Obras
-UaiDasTp4Ej1\SQL\04_SP_Ejemplares.sql   -- Stored Procedures de Ejemplares
-UaiDasTp4Ej1\SQL\05_SP_Prestamos.sql    -- Stored Procedures de Pr�stamos
+UaiDasTp4Ej1\SQL\04_SP_Ejemplares.sql -- Stored Procedures de Ejemplares
+UaiDasTp4Ej1\SQL\05_SP_Prestamos.sql -- Stored Procedures de Pr�stamos
 ```
 
-?? **Ver documentaci�n completa:** [UaiDasTp4Ej1/SQL/README.md](UaiDasTp4Ej1/SQL/README.md)
+ **Ver documentaci�n completa:** [UaiDasTp4Ej1/SQL/README.md](UaiDasTp4Ej1/SQL/README.md)
 
 #### **Paso 2: Configurar Conexi�n a la Base de Datos**
 
-**Opci�n A: Variables de Entorno (Recomendado)** ??
+**Opci�n A: Variables de Entorno (Recomendado)**
 
 Para **SQL Server Authentication** (usuario y contrase�a):
 
 ```powershell
 # PowerShell
-$env:DB_SERVER = "192.168.1.100,1433"  # Tu IP y puerto
+$env:DB_SERVER = "192.168.1.100,1433" # Tu IP y puerto
 $env:DB_DATABASE = "BibliotecaDB"
-$env:DB_USER = "sa"        # Tu usuario
-$env:DB_PASSWORD = "TuPassword123!"    # Tu contrase�a
+$env:DB_USER = "sa" # Tu usuario
+$env:DB_PASSWORD = "TuPassword123!" # Tu contrase�a
 ```
 
 Para **Windows Authentication**:
@@ -89,7 +89,7 @@ Editar `APP\Configuration.cs` (m�todo `GetDefaultConnectionString`):
 ```csharp
 private static string GetDefaultConnectionString()
 {
-    return "Server=TU_IP,PUERTO;Database=BibliotecaDB;User Id=TU_USUARIO;Password=TU_PASSWORD;TrustServerCertificate=True;";
+ return "Server=TU_IP,PUERTO;Database=BibliotecaDB;User Id=TU_USUARIO;Password=TU_PASSWORD;TrustServerCertificate=True;";
 }
 ```
 
@@ -119,7 +119,7 @@ dotnet run --project UaiDasTp4Ej1/UaiDasTp4Ej1.csproj
 
 ---
 
-## ?? Configuraci�n de Variables de Entorno
+## Configuraci�n de Variables de Entorno
 
 El sistema soporta configuraci�n mediante **variables de entorno** para mayor seguridad y flexibilidad.
 
@@ -133,7 +133,7 @@ El sistema soporta configuraci�n mediante **variables de entorno** para mayor 
 | `DB_PASSWORD` | Contrase�a (SQL Server Auth) | `MiPassword123!` |
 | `DB_USE_INTEGRATED_SECURITY` | Usar Windows Auth | `true` |
 
-### ?? C�mo Configurar las Variables de Entorno
+### C�mo Configurar las Variables de Entorno
 
 #### **Opci�n 1: Variables de Sistema (Windows) - Recomendado para desarrollo**
 
@@ -182,17 +182,17 @@ Editar el archivo `UaiDasTp4Ej1/Properties/launchSettings.json`:
 
 ```json
 {
-  "profiles": {
-    "UaiDasTp4Ej1": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "DB_SERVER": "192.168.1.100,1433",
-        "DB_DATABASE": "BibliotecaDB",
-        "DB_USER": "sa",
-        "DB_PASSWORD": "TuPasswordSeguro123!"
-      }
-    }
-  }
+ "profiles": {
+ "UaiDasTp4Ej1": {
+ "commandName": "Project",
+ "environmentVariables": {
+ "DB_SERVER": "192.168.1.100,1433",
+ "DB_DATABASE": "BibliotecaDB",
+ "DB_USER": "sa",
+ "DB_PASSWORD": "TuPasswordSeguro123!"
+ }
+ }
+ }
 }
 ```
 
@@ -207,9 +207,9 @@ DB_USER=sa
 DB_PASSWORD=TuPasswordSeguro123!
 ```
 
-**?? IMPORTANTE:** Agregar `.env` al archivo `.gitignore` para no subir contrase�as al repositorio.
+**IMPORTANTE:** Agregar `.env` al archivo `.gitignore` para no subir contrase�as al repositorio.
 
-### ?? Verificar Variables de Entorno
+### Verificar Variables de Entorno
 
 **PowerShell:**
 ```powershell
@@ -227,7 +227,7 @@ set DB_SERVER
 set DB_DATABASE
 ```
 
-### ?? Ejemplos de Configuraci�n
+### Ejemplos de Configuraci�n
 
 **Ejemplo 1: SQL Server Local con SQL Authentication**
 ```powershell
@@ -279,7 +279,7 @@ $env:DB_USE_INTEGRATED_SECURITY = "true"
 Server=(localdb)\mssqllocaldb;Database=BibliotecaDB;Trusted_Connection=True;TrustServerCertificate=True;
 ```
 
-### ?? Valor Por Defecto
+### Valor Por Defecto
 
 Si **NO** se configuran las variables de entorno, la aplicaci�n usar� autom�ticamente:
 
@@ -289,7 +289,7 @@ Server=localhost;Database=BibliotecaDB;Trusted_Connection=True;TrustServerCertif
 
 Esto es �til para desarrollo r�pido sin configuraci�n adicional.
 
-### ??? Mejores Pr�cticas de Seguridad
+### Mejores Pr�cticas de Seguridad
 
 **? Hacer:**
 - Usar variables de entorno para datos sensibles (contrase�as, IPs)
@@ -306,122 +306,122 @@ Esto es �til para desarrollo r�pido sin configuraci�n adicional.
 
 ---
 
-## ??? Arquitectura del Proyecto
+## Arquitectura del Proyecto
 
 ### Estructura de Capas
 
 ```
 UaiDasTp4Ej1/
-?
-??? ?? DOM/    # Dominio - Entidades del negocio
-?   ??? Alumno.cs
-?   ??? Obra.cs
-?   ??? Ejemplar.cs
-?   ??? Prestamo.cs
-?
-??? ?? ABS/           # Abstracci�n - Interfaces
-?   ??? IRepository.cs
-?   ??? IAlumnoRepository.cs
-?   ??? IObraRepository.cs
-?   ??? IEjemplarRepository.cs
-?   ??? IPrestamoRepository.cs
-?
-??? ?? CONTEXT/       # Contexto - Conexi�n a BD
-?   ??? DatabaseContext.cs
-?
-??? ?? REPO/        # Repositorios - Acceso a datos (ADO.NET)
-?   ??? AlumnoRepository.cs
-?   ??? ObraRepository.cs
-?   ??? EjemplarRepository.cs
-?   ??? PrestamoRepository.cs
-?
-??? ?? SERV/       # Servicios - L�gica de negocio
-?   ??? AlumnoService.cs
-?   ??? ObraService.cs
-?   ??? EjemplarService.cs
-?   ??? PrestamoService.cs
-?
-??? ?? APP/      # Aplicaci�n - Configuraci�n e IoC
-?   ??? Configuration.cs # ?? Con soporte de variables de entorno
-?   ??? DependencyInjection.cs
-?
-??? ?? UaiDasTp4Ej1/  # Presentaci�n - Windows Forms (MDI/SDI)
-?   ??? FormPrincipal.cs # MDI Container (antes Form1)
-?   ??? FormAlumnos.cs        # SDI - Gesti�n de Alumnos
-?   ??? FormObras.cs    # SDI - Gesti�n de Obras
-?   ??? FormEjemplares.cs# SDI - Gesti�n de Ejemplares
-?   ??? FormPrestamos.cs      # SDI - Gesti�n de Pr�stamos
-?
-??? ?? SQL/        # Scripts de Base de Datos
-    ??? 01_CreateDatabase.sql
-    ??? 02_SP_Alumnos.sql
-    ??? 03_SP_Obras.sql
-    ??? 04_SP_Ejemplares.sql
-    ??? 05_SP_Prestamos.sql
-    ??? README.md
+│
+├── DOM/ # Dominio - Entidades del negocio
+│ ├── Alumno.cs
+│ ├── Obra.cs
+│ ├── Ejemplar.cs
+│ ├── Prestamo.cs
+│
+├── ABS/ # Abstracci�n - Interfaces
+│ ├── IRepository.cs
+│ ├── IAlumnoRepository.cs
+│ ├── IObraRepository.cs
+│ ├── IEjemplarRepository.cs
+│ ├── IPrestamoRepository.cs
+│
+├── CONTEXT/ # Contexto - Conexi�n a BD
+│ ├── DatabaseContext.cs
+│
+├── REPO/ # Repositorios - Acceso a datos (ADO.NET)
+│ ├── AlumnoRepository.cs
+│ ├── ObraRepository.cs
+│ ├── EjemplarRepository.cs
+│ ├── PrestamoRepository.cs
+│
+├── SERV/ # Servicios - L�gica de negocio
+│ ├── AlumnoService.cs
+│ ├── ObraService.cs
+│ ├── EjemplarService.cs
+│ ├── PrestamoService.cs
+│
+├── APP/ # Aplicaci�n - Configuraci�n e IoC
+│ ├── Configuration.cs # Con soporte de variables de entorno
+│ ├── DependencyInjection.cs
+│
+├── UaiDasTp4Ej1/ # Presentaci�n - Windows Forms (MDI/SDI)
+│ ├── FormPrincipal.cs # MDI Container (antes Form1)
+│ ├── FormAlumnos.cs # SDI - Gesti�n de Alumnos
+│ ├── FormObras.cs # SDI - Gesti�n de Obras
+│ ├── FormEjemplares.cs# SDI - Gesti�n de Ejemplares
+│ ├── FormPrestamos.cs # SDI - Gesti�n de Pr�stamos
+│
+├── SQL/ # Scripts de Base de Datos
+ ├── 01_CreateDatabase.sql
+ ├── 02_SP_Alumnos.sql
+ ├── 03_SP_Obras.sql
+ ├── 04_SP_Ejemplares.sql
+ ├── 05_SP_Prestamos.sql
+ ├── README.md
 ```
 
 ### Flujo de Dependencias
 
 ```
 Presentaci�n (WinForms)
-     ?
-    Servicios (SERV)
-       ?
-  Repositorios (REPO)
-         ?
-    Contexto (CONTEXT)
- ?
-   Base de Datos (SQL Server)
+│
+ Servicios (SERV)
+│
+ Repositorios (REPO)
+│
+ Contexto (CONTEXT)
+│
+ Base de Datos (SQL Server)
 ```
 
 ---
 
-## ??? Modelo de Datos
+## Modelo de Datos
 
 ### Diagrama de Tablas
 
 ```
-???????????????????      ???????????????????
-?    ALUMNOS      ?      ?     OBRAS       ?
-??????????????????? ???????????????????
-? Id (PK)         ?    ? Id (PK)         ?
-? Nombre          ? ? Titulo    ?
-? Apellido        ?    ? Autor           ?
-? DNI (UNIQUE) ?      ? Editorial    ?
-? Email           ?      ? ISBN (UNIQUE)   ?
-? Telefono        ?    ? AnioPublicacion ?
-? FechaNacimiento ?      ? Genero          ?
-? Activo          ?      ? Activo          ?
-???????????????????  ???????????????????
-  ? ?
-    ? ?
-         ?        ?????????????????????????????????????
-         ?        ?         EJEMPLARES       ?
-       ?        ?????????????????????????????????????
-   ?        ? Id (PK)        ?
-  ?    ? ObraId (FK) ???????????????????????
-         ?  ? NumeroInventario (UNIQUE)    ?
-         ?        ? Precio            ?
-  ?        ? Disponible                ?
-         ?        ? Activo           ?
-  ?        ?????????????????????????????????????
-         ?        ?
-   ?           ?
-         ???????????????????
-      ?
-         ??????????????????????????
-     ?      PRESTAMOS    ?
-         ??????????????????????????
-      ? Id (PK)         ?
-         ? AlumnoId (FK) ??????????
-         ? EjemplarId (FK) ????????
-         ? FechaPrestamo          ?
-         ? FechaDevolucionPrevista?
-     ? FechaDevolucionReal    ?
-         ? Devuelto        ?
-         ? Activo              ?
- ??????????????????????????
+┌─────────────────────┐      ┌─────────────────────┐
+│      ALUMNOS        │      │       OBRAS         │
+├─────────────────────┤      ├─────────────────────┤
+│ Id (PK)             │      │ Id (PK)             │
+│ Nombre              │      │ Titulo              │
+│ Apellido            │      │ Autor               │
+│ DNI (UNIQUE)        │      │ Editorial           │
+│ Email               │      │ ISBN (UNIQUE)       │
+│ Telefono            │      │ AnioPublicacion     │
+│ FechaNacimiento     │      │ Genero              │
+│ Activo              │      │ Activo              │
+└─────────────────────┘      └─────────────────────┘
+        │                             │
+        │                             │
+        │        ┌────────────────────┴────────────────────┐
+        │        │           EJEMPLARES                    │
+        │        ├─────────────────────────────────────────┤
+        │        │ Id (PK)                                 │
+        │        │ ObraId (FK) ────────────────────────────┘
+        │        │ NumeroInventario (UNIQUE)               │
+        │        │ Precio                                  │
+        │        │ Disponible                              │
+        │        │ Activo                                  │
+        │        └─────────────────────────────────────────┘
+        │                     │
+        │                     │
+        └─────────┬───────────┘
+                  │
+        ┌─────────┴───────────────────┐
+        │       PRESTAMOS             │
+        ├─────────────────────────────┤
+        │ Id (PK)                     │
+        │ AlumnoId (FK) ──────────────┘
+        │ EjemplarId (FK) ────────────┘
+        │ FechaPrestamo               │
+        │ FechaDevolucionPrevista     │
+        │ FechaDevolucionReal         │
+        │ Devuelto                    │
+        │ Activo                      │
+        └─────────────────────────────┘
 ```
 
 ### Descripci�n de Tablas
@@ -462,7 +462,7 @@ Presentaci�n (WinForms)
 
 ---
 
-## ?? Instalaci�n Completa
+## Instalaci�n Completa
 
 ### 1. Clonar o Descargar el Proyecto
 
@@ -488,7 +488,7 @@ Ejecutar en SSMS en el siguiente orden desde la carpeta `UaiDasTp4Ej1\SQL\`:
 :r UaiDasTp4Ej1\SQL\05_SP_Prestamos.sql
 ```
 
-?? **Ver gu�a detallada:** [UaiDasTp4Ej1/SQL/README.md](UaiDasTp4Ej1/SQL/README.md)
+ **Ver gu�a detallada:** [UaiDasTp4Ej1/SQL/README.md](UaiDasTp4Ej1/SQL/README.md)
 
 #### Opci�n B: Script Individual
 
@@ -542,7 +542,7 @@ La base de datos incluye autom�ticamente:
 
 ---
 
-## ?? Funcionalidades
+## Funcionalidades
 
 ### Gesti�n de Alumnos
 - ? Alta de alumnos con validaci�n de DNI �nico
@@ -593,7 +593,7 @@ La base de datos incluye autom�ticamente:
 
 ---
 
-## ??? Tecnolog�as Utilizadas
+## Tecnolog�as Utilizadas
 
 | Tecnolog�a | Versi�n | Prop�sito |
 |------------|---------|-----------|
@@ -609,7 +609,7 @@ La base de datos incluye autom�ticamente:
 
 ---
 
-## ?? Principios y Patrones Aplicados
+## Principios y Patrones Aplicados
 
 ### SOLID
 
@@ -675,13 +675,13 @@ La base de datos incluye autom�ticamente:
 - **Service Layer Pattern**: L�gica de negocio centralizada
 - **Dependency Injection**: Desacoplamiento y testabilidad
 - **MDI/SDI Pattern**: Interfaz de m�ltiples documentos
-- **Environment Variables**: Configuraci�n externa segura ??
+- **Environment Variables**: Configuraci�n externa segura
 
 ---
 
 ## ? Checklist de Cumplimiento
 
-### ?? Requerimientos del TP4 - Ejercicio 1
+### Requerimientos del TP4 - Ejercicio 1
 
 #### ? 1. Base de Datos
 - [x] Base de datos BibliotecaDB creada
@@ -753,7 +753,7 @@ La base de datos incluye autom�ticamente:
 - [x] Mensajes de confirmaci�n
 - [x] Manejo de errores
 
-### ??? Arquitectura Implementada
+### Arquitectura Implementada
 
 #### ? Capas del Proyecto
 - [x] **DOM** - 4 entidades de dominio
@@ -761,7 +761,7 @@ La base de datos incluye autom�ticamente:
 - [x] **CONTEXT** - Contexto de BD
 - [x] **REPO** - 4 repositorios con ADO.NET
 - [x] **SERV** - 4 servicios de negocio
-- [x] **APP** - Configuraci�n e IoC con variables de entorno ??
+- [x] **APP** - Configuraci�n e IoC con variables de entorno
 - [x] **UaiDasTp4Ej1** - 5 formularios WinForms
 - [x] **SQL** - 6 scripts SQL
 
@@ -791,7 +791,7 @@ La base de datos incluye autom�ticamente:
 - [x] Validaciones en capa de negocio
 - [x] Validaciones en capa de presentaci�n
 - [x] Separaci�n de responsabilidades
-- [x] **Configuraci�n mediante variables de entorno** ??
+- [x] **Configuraci�n mediante variables de entorno**
 
 **Reglas de Negocio:**
 - [x] DNI �nico por alumno
@@ -803,7 +803,7 @@ La base de datos incluye autom�ticamente:
 - [x] Validaci�n de campos requeridos
 - [x] Validaci�n de fechas
 
-### ?? Estad�sticas del Proyecto
+### Estad�sticas del Proyecto
 
 - **Proyectos**: 7
 - **Entidades**: 4 (Alumno, Obra, Ejemplar, Prestamo)
@@ -817,7 +817,7 @@ La base de datos incluye autom�ticamente:
 
 ---
 
-## ?? Soluci�n de Problemas
+## Soluci�n de Problemas
 
 ### Error: "Cannot open database"
 **Soluci�n:**
@@ -867,7 +867,7 @@ dotnet build
 
 ---
 
-## ?? Uso de la Aplicaci�n
+## Uso de la Aplicaci�n
 
 ### Gestionar Alumnos
 1. Men� **Gesti�n** ? **Alumnos**
@@ -907,7 +907,7 @@ dotnet build
 
 ---
 
-## ?? Comandos �tiles
+## Comandos �tiles
 
 ### Resetear la Base de Datos
 ```sql
@@ -949,7 +949,7 @@ Get-ChildItem Env: | Where-Object { $_.Name -like "DB_*" }
 
 ---
 
-## ?? Entrega del TP
+## Entrega del TP
 
 ### ? Estado Final
 
@@ -957,25 +957,25 @@ Get-ChildItem Env: | Where-Object { $_.Name -like "DB_*" }
 
 El proyecto cumple con **TODOS** los requerimientos del TP4 Ejercicio 1:
 
-? Base de datos completa con 4 tablas relacionadas  
-? 32 Stored procedures para todas las operaciones CRUD  
-? Interfaz MDI/SDI completamente funcional  
-? Arquitectura en 7 capas bien definidas  
-? Principios SOLID, DRY, YAGNI, KISS aplicados  
-? Clean Code y Clean Architecture implementados  
-? ADO.NET en modo conectado  
-? Inyecci�n de dependencias  
-? **Configuraci�n segura con variables de entorno** ??  
+? Base de datos completa con 4 tablas relacionadas 
+? 32 Stored procedures para todas las operaciones CRUD 
+? Interfaz MDI/SDI completamente funcional 
+? Arquitectura en 7 capas bien definidas 
+? Principios SOLID, DRY, YAGNI, KISS aplicados 
+? Clean Code y Clean Architecture implementados 
+? ADO.NET en modo conectado 
+? Inyecci�n de dependencias 
+? **Configuraci�n segura con variables de entorno** 
 ? Documentaci�n completa
 
-### ?? Qu� Entregar
+### Qu� Entregar
 
 1. **C�digo Fuente** (carpeta completa del proyecto)
 2. **Scripts SQL** (carpeta `SQL/`)
 3. **Este README.md** (incluye toda la documentaci�n)
 4. **Archivo de soluci�n** (.sln)
 
-### ?? Puntos Destacados para la Presentaci�n
+### Puntos Destacados para la Presentaci�n
 
 1. **Arquitectura en Capas** - 7 proyectos independientes
 2. **Stored Procedures** - 32 SPs con transacciones
@@ -985,31 +985,31 @@ El proyecto cumple con **TODOS** los requerimientos del TP4 Ejercicio 1:
 6. **Interfaz MDI/SDI** - **FormPrincipal** con formularios hijos
 7. **Validaciones** - En capa de negocio y presentaci�n
 8. **Manejo de Transacciones** - En pr�stamos y devoluciones
-9. **Variables de Entorno** - Configuraci�n segura y flexible ??
+9. **Variables de Entorno** - Configuraci�n segura y flexible
 
 ---
 
-## ????? Informaci�n del Proyecto
+## Informaci�n del Proyecto
 
-**Asignatura**: Desarrollo y Arquitectura de Software  
-**Trabajo Pr�ctico**: TP4 - Ejercicio 1  
-**Tecnolog�a**: .NET 8, C# 12, Windows Forms, ADO.NET, SQL Server  
-**Arquitectura**: Capas con SOLID y Clean Architecture  
-**Configuraci�n**: Variables de entorno para seguridad ??  
-**A�o**: 2025  
+**Asignatura**: Desarrollo y Arquitectura de Software 
+**Trabajo Pr�ctico**: TP4 - Ejercicio 1 
+**Tecnolog�a**: .NET 8, C# 12, Windows Forms, ADO.NET, SQL Server 
+**Arquitectura**: Capas con SOLID y Clean Architecture 
+**Configuraci�n**: Variables de entorno para seguridad 
+**A�o**: 2025 
 
 ---
 
-## ?? Licencia
+## Licencia
 
 Este proyecto es un trabajo acad�mico desarrollado para la asignatura Desarrollo y Arquitectura de Software.
 
 ---
 
-## ?? Documentaci�n Adicional
+## Documentaci�n Adicional
 
-- ??? Scripts SQL documentados en la carpeta `SQL/` - ver [README de SQL](UaiDasTp4Ej1/SQL/README.md)
+- Scripts SQL documentados en la carpeta `SQL/` - ver [README de SQL](UaiDasTp4Ej1/SQL/README.md)
 
 ---
 
-**�Sistema listo para usar y presentar!** ??????????
+**�Sistema listo para usar y presentar!** 
